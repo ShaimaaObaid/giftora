@@ -1,0 +1,71 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Giftora | Smart Gift Recommendations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Giftora</div>
+        <div class="nav-links">
+    <a href="/">Home</a>
+
+    {% if request.user.is_authenticated %}
+        <span class="welcome-text">Hi, {{ request.user.first_name }}</span>
+        <a href="/logout/" class="nav-btn">Logout</a>
+    {% else %}
+        <a href="/login/">Login</a>
+        <a href="/register/" class="nav-btn">Get Started</a>
+    {% endif %}
+</div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <p class="tagline">Smart gifting made simple</p>
+            <h1>Find the perfect gift for every occasion</h1>
+            <p class="description">
+                Giftora helps users discover thoughtful gifts based on occasion,
+                budget, and recipient type — making gift shopping faster, easier,
+                and more personal.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="/register/" class="primary-btn">Start Now</a>
+                <a href="/login/" class="secondary-btn">Login</a>
+            </div>
+        </div>
+
+        <div class="gift-card">
+            <div class="gift-icon">🎁</div>
+            <h3>AI Gift Assistant</h3>
+            <p>Coming soon: personalized gift ideas powered by smart recommendations.</p>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="feature-box">
+            <h3>Occasion-Based</h3>
+            <p>Choose gifts for birthdays, weddings, graduation, Eid, Ramadan, and more.</p>
+        </div>
+
+        <div class="feature-box">
+            <h3>Budget Friendly</h3>
+            <p>Find gift ideas that match your budget without wasting time searching.</p>
+        </div>
+
+        <div class="feature-box">
+            <h3>Personalized</h3>
+            <p>Gift suggestions can be filtered by recipient type, style, and preferences.</p>
+        </div>
+    </section>
+
+</body>
+</html>

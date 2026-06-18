@@ -1,0 +1,97 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gift Suggestions | Giftora</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">Giftora</div>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/suggestions/">Gift Suggestions</a>
+        <a href="/logout/" class="nav-btn">Logout</a>
+    </div>
+</nav>
+
+<section class="suggestion-page">
+    <div class="suggestion-card">
+        <h1>Find a Gift Idea</h1>
+        <p>Select the occasion and budget to get a quick gift suggestion.</p>
+
+        <form>
+            <select>
+                <option>Birthday</option>
+                <option>Graduation</option>
+                <option>Wedding</option>
+                <option>Eid</option>
+                <option>New Baby</option>
+            </select>
+
+            <select>
+                <option>Under $25</option>
+                <option>$25 - $50</option>
+                <option>$50 - $100</option>
+                <option>Above $100</option>
+            </select>
+
+            <button type="button">Suggest Gift</button>
+        </form>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search by occasion, category, or gift name...">
+
+        <div class="gifts-grid" id="giftsGrid">
+
+    {% for gift in gifts %}
+
+    <div class="gift-item">
+
+        <img src="{{ gift.image }}" alt="{{ gift.name }}">
+
+        <h3>{{ gift.name }}</h3>
+
+        <p>{{ gift.description }}</p>
+
+        <h4>${{ gift.price }}</h4>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+    </div>
+</section>
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const giftsGrid = document.getElementById('giftsGrid');
+
+    searchInput.addEventListener('keyup', function () {
+        const query = searchInput.value;
+
+        fetch(`/api/gifts/search/?q=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                giftsGrid.innerHTML = '';
+
+                data.gifts.forEach(gift => {
+                    giftsGrid.innerHTML += `
+                        <div class="gift-item">
+                            <img src="${gift.image}" alt="${gift.name}">
+                            <h3>${gift.name}</h3>
+                            <p>${gift.description}</p>
+                            <h4>$${gift.price}</h4>
+                        </div>
+                    `;
+                });
+            });
+    });
+</script>
+
+</body>
+</html>

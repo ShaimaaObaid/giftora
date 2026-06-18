@@ -1,0 +1,80 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About Us | Giftora</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">Giftora</div>
+
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/suggestions/">Suggestions</a>
+        <a href="/about/">About Us</a>
+        {% if request.user.is_authenticated %}
+            <a href="/logout/" class="nav-btn">Logout</a>
+        {% else %}
+            <a href="/login/">Login</a>
+        {% endif %}
+    </div>
+</nav>
+
+<section class="about-hero">
+    <p class="tagline">About Giftora</p>
+    <h1>Thoughtful gifting, made smarter.</h1>
+    <p>
+        Giftora is a smart gift recommendation platform designed to help users
+        discover meaningful gifts based on occasion, budget, and recipient type.
+    </p>
+</section>
+
+<section class="about-grid">
+    <div class="about-box">
+        <h3>Our Mission</h3>
+        <p>
+            To make gift shopping easier, faster, and more personal by helping users
+            choose gifts that truly match the moment.
+        </p>
+    </div>
+
+    <div class="about-box">
+        <h3>Our Vision</h3>
+        <p>
+            To become a modern gifting assistant for users in the Gulf region,
+            combining elegant design with smart recommendations.
+        </p>
+    </div>
+
+    <div class="about-box">
+        <h3>Why Giftora?</h3>
+        <p>
+            Giftora is not just a gift store. It focuses on decision support,
+            personalization, and a better user experience.
+        </p>
+    </div>
+</section>
+
+<section class="contact-section">
+    <h2>Connect With Us</h2>
+    <p>Follow Giftora for gift inspiration, seasonal collections, and personalized ideas.</p>
+
+    <div class="social-links">
+        <a href="#">Instagram</a>
+        <a href="#">TikTok</a>
+        <a href="#">Email</a>
+    </div>
+</section>
+
+</body>
+</html>
