@@ -44,3 +44,45 @@ Many users spend time searching for gifts without knowing what to choose. Giftor
 
 ```text
 /api/gifts/search/?q=keyword
+```
+
+This endpoint returns gift data based on gift name, category, occasion, or recipient type.
+
+## Database
+
+The project uses MySQL as the backend database.
+
+Main models:
+
+- Gift
+- Recommendation
+- Favorite
+- User
+
+## Setup Instructions
+
+```bash
+git clone <repository-link>
+cd giftora
+
+python -m venv venv
+venv\Scripts\activate
+
+pip install -r requirements.txt
+
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+## Future Improvements
+
+- Favorites / Wishlist
+- AI Gift Assistant
+- Advanced Recommendation Logic
+- AWS Deployment
+- Seasonal Gift Collections
+
+## Author
+
+Developed by Shaymaa Obaid
