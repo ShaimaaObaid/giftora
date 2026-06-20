@@ -4,92 +4,153 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Gift Suggestions | Giftora</title>
+    <title>Explore Gifts | Giftora</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
 </head>
 <body>
 
 <nav class="navbar">
     <div class="logo">Giftora</div>
+
     <div class="nav-links">
         <a href="/">Home</a>
-        <a href="/suggestions/">Gift Suggestions</a>
-        <a href="/logout/" class="nav-btn">Logout</a>
+        <a href="/suggestions/">Explore Gifts</a>
+        <a href="/find-gift/">Find My Gift</a>
+        <a href="/about/">About</a>
+
+        {% if request.user.is_authenticated %}
+            <a href="/logout/" class="nav-btn">Logout</a>
+        {% else %}
+            <a href="/login/">Login</a>
+            <a href="/register/" class="nav-btn">Get Started</a>
+        {% endif %}
     </div>
 </nav>
 
-<section class="suggestion-page">
-    <div class="suggestion-card">
-        <h1>Find a Gift Idea</h1>
-        <p>Select the occasion and budget to get a quick gift suggestion.</p>
+<section class="explore-page">
 
-        <form>
-            <select>
-                <option>Birthday</option>
-                <option>Graduation</option>
-                <option>Wedding</option>
-                <option>Eid</option>
-                <option>New Baby</option>
-            </select>
+    <div class="explore-header">
+        <p class="tagline">Gift Catalog</p>
 
-            <select>
-                <option>Under $25</option>
-                <option>$25 - $50</option>
-                <option>$50 - $100</option>
-                <option>Above $100</option>
-            </select>
+        <h1>Explore gifts for every moment</h1>
 
-            <button type="button">Suggest Gift</button>
-        </form>
-        <input type="text" id="searchInput" class="search-input" placeholder="Search by occasion, category, or gift name...">
+        <p>
+            Browse curated gift ideas by name, occasion, category, or recipient.
+            Use live search to narrow the catalog without reloading the page.
+        </p>
 
-        <div class="gifts-grid" id="giftsGrid">
+        <div class="search-panel">
+            <input 
+                type="text" 
+                id="searchInput" 
+                class="search-input" 
+                placeholder="Search flowers, chocolate, birthday, mother..."
+            >
 
-    {% for gift in gifts %}
+            <p class="search-helper" id="searchHelper">
+                Showing all available gifts.
+            </p>
 
-    <div class="gift-item">
-
-        <img src="{{ gift.image }}" alt="{{ gift.name }}">
-
-        <h3>{{ gift.name }}</h3>
-
-        <p>{{ gift.description }}</p>
-
-        <h4>${{ gift.price }}</h4>
-
+            <div class="quick-filters">
+                <button type="button" data-query="">All</button>
+                <button type="button" data-query="Birthday">Birthday</button>
+                <button type="button" data-query="Eid">Eid</button>
+                <button type="button" data-query="Chocolate">Chocolate</button>
+                <button type="button" data-query="Flowers">Flowers</button>
+                <button type="button" data-query="Mother">Mother</button>
+                <button type="button" data-query="Friend">Friend</button>
+            </div>
+        </div>
     </div>
 
-    {% endfor %}
+    <div class="gifts-grid" id="giftsGrid">
+        {% for gift in gifts %}
+            <div class="gift-item">
+                <span class="gift-badge">Gift Idea</span>
 
-</div>
+                <img src="{{ gift.image }}" alt="{{ gift.name }}">
+
+                <h3>{{ gift.name }}</h3>
+
+                <p>{{ gift.description }}</p>
+
+                <h4>${{ gift.price }}</h4>
+            </div>
+        {% empty %}
+            <div class="empty-state">
+                <h3>No gifts available yet</h3>
+                <p>Gift ideas will appear here once they are added from the admin dashboard.</p>
+            </div>
+        {% endfor %}
     </div>
+
 </section>
+
 <script>
     const searchInput = document.getElementById('searchInput');
     const giftsGrid = document.getElementById('giftsGrid');
+    const searchHelper = document.getElementById('searchHelper');
+    const filterButtons = document.querySelectorAll('.quick-filters button');
 
-    searchInput.addEventListener('keyup', function () {
-        const query = searchInput.value;
-
-        fetch(`/api/gifts/search/?q=${query}`)
+    function loadGifts(query) {
+        fetch(`/api/gifts/search/?q=${encodeURIComponent(query)}`)
             .then(response => response.json())
             .then(data => {
                 giftsGrid.innerHTML = '';
 
+                if (query.trim() === '') {
+                    searchHelper.textContent = 'Showing all available gifts.';
+                } else {
+                    searchHelper.textContent = `Showing results for "${query}".`;
+                }
+
+                if (data.gifts.length === 0) {
+                    giftsGrid.innerHTML = `
+                        <div class="empty-state">
+                            <h3>No gifts found</h3>
+                            <p>Try another occasion, category, recipient, or gift name.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
                 data.gifts.forEach(gift => {
                     giftsGrid.innerHTML += `
                         <div class="gift-item">
+                            <span class="gift-badge">Gift Idea</span>
+
                             <img src="${gift.image}" alt="${gift.name}">
+
                             <h3>${gift.name}</h3>
+
                             <p>${gift.description}</p>
+
                             <h4>$${gift.price}</h4>
                         </div>
                     `;
                 });
             });
+    }
+
+    searchInput.addEventListener('keyup', function () {
+        loadGifts(searchInput.value);
+    });
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const query = this.getAttribute('data-query');
+            searchInput.value = query;
+            loadGifts(query);
+
+            filterButtons.forEach(btn => btn.classList.remove('active-filter'));
+            this.classList.add('active-filter');
+        });
     });
 </script>
 

@@ -2,13 +2,20 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from .models import Gift
 from django.http import JsonResponse
 from django.db.models import Q
 
-# Create your views here.
+from .models import Gift, Recommendation
+
+
 def home(request):
-    return render(request, 'main/home.html')
+    trending_gifts = Gift.objects.filter(is_trending=True)[:4]
+
+    context = {
+        'trending_gifts': trending_gifts
+    }
+
+    return render(request, 'main/home.html', context)
 
 
 def login_view(request):
@@ -26,6 +33,7 @@ def login_view(request):
         return redirect('/login/')
 
     return render(request, 'main/login.html')
+
 
 def logout_view(request):
     logout(request)
@@ -60,7 +68,7 @@ def register_view(request):
             messages.error(request, 'Email already exists')
             return redirect('/register/')
 
-        User.objects.create_user(
+        user = User.objects.create_user(
             username=email,
             email=email,
             password=password,
@@ -68,10 +76,11 @@ def register_view(request):
             last_name=last_name
         )
 
-        messages.success(request, 'Account created successfully. Please login.')
-        return redirect('/login/')
+        login(request, user)
+        return redirect('/')
 
     return render(request, 'main/register.html')
+
 
 def suggestions(request):
     gifts = Gift.objects.all()
@@ -82,8 +91,10 @@ def suggestions(request):
 
     return render(request, 'main/suggestions.html', context)
 
+
 def about(request):
     return render(request, 'main/about.html')
+
 
 def gift_search_api(request):
     query = request.GET.get('q', '')
@@ -91,7 +102,8 @@ def gift_search_api(request):
     gifts = Gift.objects.filter(
         Q(name__icontains=query) |
         Q(category__icontains=query) |
-        Q(occasion__icontains=query)
+        Q(occasion__icontains=query) |
+        Q(recipient_type__icontains=query)
     )
 
     data = []
@@ -105,3 +117,36 @@ def gift_search_api(request):
         })
 
     return JsonResponse({'gifts': data})
+
+
+def find_gift(request):
+    gifts = None
+    searched = False
+
+    recipient_type = request.GET.get('recipient_type')
+    occasion = request.GET.get('occasion')
+    budget = request.GET.get('budget')
+
+    if recipient_type and occasion and budget:
+        searched = True
+
+        gifts = Gift.objects.filter(
+            recipient_type__iexact=recipient_type,
+            occasion__iexact=occasion,
+            price__lte=budget
+        )
+
+        if request.user.is_authenticated:
+            Recommendation.objects.create(
+                user=request.user,
+                occasion=occasion,
+                budget=budget,
+                recipient_type=recipient_type
+            )
+
+    context = {
+        'gifts': gifts,
+        'searched': searched
+    }
+
+    return render(request, 'main/find_gift.html', context)

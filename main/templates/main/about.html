@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>About Us | Giftora</title>
+    <title>About Giftora</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,8 +20,10 @@
 
     <div class="nav-links">
         <a href="/">Home</a>
-        <a href="/suggestions/">Suggestions</a>
-        <a href="/about/">About Us</a>
+        <a href="/suggestions/">Explore Gifts</a>
+        <a href="/find-gift/">Find My Gift</a>
+        <a href="/about/">About</a>
+
         {% if request.user.is_authenticated %}
             <a href="/logout/" class="nav-btn">Logout</a>
         {% else %}
@@ -32,48 +34,101 @@
 
 <section class="about-hero">
     <p class="tagline">About Giftora</p>
-    <h1>Thoughtful gifting, made smarter.</h1>
+
+    <h1>Helping people choose better gifts.</h1>
+
     <p>
-        Giftora is a smart gift recommendation platform designed to help users
-        discover meaningful gifts based on occasion, budget, and recipient type.
+        Giftora is a gift discovery platform designed to simplify gift
+        selection. Instead of browsing endlessly, users receive gift ideas
+        based on the recipient, occasion, and budget.
     </p>
 </section>
 
 <section class="about-grid">
+
     <div class="about-box">
-        <h3>Our Mission</h3>
+        <h3>The Problem</h3>
         <p>
-            To make gift shopping easier, faster, and more personal by helping users
-            choose gifts that truly match the moment.
+            Many people know they want to buy a gift but do not know
+            where to start. Searching through hundreds of products can
+            be overwhelming and time-consuming.
         </p>
     </div>
 
     <div class="about-box">
-        <h3>Our Vision</h3>
+        <h3>Our Solution</h3>
         <p>
-            To become a modern gifting assistant for users in the Gulf region,
-            combining elegant design with smart recommendations.
+            Giftora guides users through a simple recommendation process,
+            helping them discover gift ideas that fit their needs more
+            quickly and efficiently.
         </p>
     </div>
 
     <div class="about-box">
-        <h3>Why Giftora?</h3>
+        <h3>Future Vision</h3>
         <p>
-            Giftora is not just a gift store. It focuses on decision support,
-            personalization, and a better user experience.
+            Future versions of Giftora will include trending gifts,
+            smarter recommendations, and seasonal collections inspired
+            by current gifting trends.
         </p>
     </div>
+
 </section>
 
-<section class="contact-section">
-    <h2>Connect With Us</h2>
-    <p>Follow Giftora for gift inspiration, seasonal collections, and personalized ideas.</p>
+<section class="value-section">
 
-    <div class="social-links">
-        <a href="#">Instagram</a>
-        <a href="#">TikTok</a>
-        <a href="#">Email</a>
+    <div class="value-text">
+        <p class="tagline">How It Works</p>
+
+        <h2>Three simple steps</h2>
+
+        <p>
+            Giftora keeps the process simple and focused.
+        </p>
     </div>
+
+    <div class="value-steps">
+
+        <div class="value-step">
+            <span>01</span>
+            <h3>Choose Recipient</h3>
+            <p>Select who the gift is for.</p>
+        </div>
+
+        <div class="value-step">
+            <span>02</span>
+            <h3>Select Occasion</h3>
+            <p>Pick the event or celebration.</p>
+        </div>
+
+        <div class="value-step">
+            <span>03</span>
+            <h3>Get Gift Ideas</h3>
+            <p>Browse matching recommendations.</p>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="home-cta">
+
+    <div>
+        <p class="tagline">Ready to try it?</p>
+
+        <h2>Start finding gifts today.</h2>
+
+        <p>
+            Explore our catalog or use the gift finder to discover ideas
+            tailored to your needs.
+        </p>
+    </div>
+
+    <div class="hero-buttons">
+        <a href="/find-gift/" class="primary-btn">Find My Gift</a>
+        <a href="/suggestions/" class="secondary-btn">Explore Gifts</a>
+    </div>
+
 </section>
 
 </body>

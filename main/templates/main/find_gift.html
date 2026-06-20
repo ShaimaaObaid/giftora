@@ -1,0 +1,163 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Find My Gift | Giftora</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">Giftora</div>
+
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/suggestions/">Explore Gifts</a>
+        <a href="/find-gift/">Find My Gift</a>
+        <a href="/about/">About</a>
+
+        {% if request.user.is_authenticated %}
+            <a href="/logout/" class="nav-btn">Logout</a>
+        {% else %}
+            <a href="/login/">Login</a>
+            <a href="/register/" class="nav-btn">Get Started</a>
+        {% endif %}
+    </div>
+</nav>
+
+<section class="find-gift-page">
+
+    <div class="find-gift-card">
+        <p class="tagline">Personalized Recommendations</p>
+
+        <h1>Get personalized gift recommendations</h1>
+
+        <p class="find-description">
+            Answer three quick questions and Giftora will suggest gifts that match
+            your recipient, occasion, and budget.
+        </p>
+
+        <div class="steps-row">
+            <div class="step-box">
+                <span>1</span>
+                <p>Choose recipient</p>
+            </div>
+
+            <div class="step-box">
+                <span>2</span>
+                <p>Select occasion</p>
+            </div>
+
+            <div class="step-box">
+                <span>3</span>
+                <p>Set budget</p>
+            </div>
+        </div>
+
+        <form method="GET" action="/find-gift/#results" class="find-form">
+            <select name="recipient_type" required>
+                <option value="">Who is the gift for?</option>
+
+                <option value="Mother" {% if request.GET.recipient_type == "Mother" %}selected{% endif %}>Mother</option>
+                <option value="Father" {% if request.GET.recipient_type == "Father" %}selected{% endif %}>Father</option>
+                <option value="Sister" {% if request.GET.recipient_type == "Sister" %}selected{% endif %}>Sister</option>
+                <option value="Brother" {% if request.GET.recipient_type == "Brother" %}selected{% endif %}>Brother</option>
+                <option value="Friend" {% if request.GET.recipient_type == "Friend" %}selected{% endif %}>Friend</option>
+                <option value="Partner" {% if request.GET.recipient_type == "Partner" %}selected{% endif %}>Partner</option>
+                <option value="Coworker" {% if request.GET.recipient_type == "Coworker" %}selected{% endif %}>Coworker</option>
+                <option value="Teacher" {% if request.GET.recipient_type == "Teacher" %}selected{% endif %}>Teacher</option>
+                <option value="Child" {% if request.GET.recipient_type == "Child" %}selected{% endif %}>Child</option>
+                <option value="General" {% if request.GET.recipient_type == "General" %}selected{% endif %}>General</option>
+            </select>
+
+            <select name="occasion" required>
+                <option value="">Choose occasion</option>
+
+                <option value="Birthday" {% if request.GET.occasion == "Birthday" %}selected{% endif %}>Birthday</option>
+                <option value="Graduation" {% if request.GET.occasion == "Graduation" %}selected{% endif %}>Graduation</option>
+                <option value="Wedding" {% if request.GET.occasion == "Wedding" %}selected{% endif %}>Wedding</option>
+                <option value="Anniversary" {% if request.GET.occasion == "Anniversary" %}selected{% endif %}>Anniversary</option>
+                <option value="Eid" {% if request.GET.occasion == "Eid" %}selected{% endif %}>Eid</option>
+                <option value="Ramadan" {% if request.GET.occasion == "Ramadan" %}selected{% endif %}>Ramadan</option>
+                <option value="New Baby" {% if request.GET.occasion == "New Baby" %}selected{% endif %}>New Baby</option>
+                <option value="Thank You" {% if request.GET.occasion == "Thank You" %}selected{% endif %}>Thank You</option>
+            </select>
+
+            <select name="budget" required>
+                <option value="">Select budget</option>
+
+                <option value="25" {% if request.GET.budget == "25" %}selected{% endif %}>Up to $25</option>
+                <option value="50" {% if request.GET.budget == "50" %}selected{% endif %}>Up to $50</option>
+                <option value="100" {% if request.GET.budget == "100" %}selected{% endif %}>Up to $100</option>
+                <option value="1000" {% if request.GET.budget == "1000" %}selected{% endif %}>Any Budget</option>
+            </select>
+
+            <button type="submit">Find My Gift</button>
+        </form>
+    </div>
+
+    {% if gifts %}
+        <div id="results" class="results-header">
+            <p class="tagline">Recommended for you</p>
+
+            <h2>Gift ideas that match your choices</h2>
+
+            <p>
+                Based on your recipient, occasion, and budget, these gifts are
+                the best available matches.
+            </p>
+        </div>
+
+        <div class="gifts-grid">
+            {% for gift in gifts %}
+                <div class="gift-item">
+                    <span class="gift-badge">Recommended</span>
+
+                    <img src="{{ gift.image }}" alt="{{ gift.name }}">
+
+                    <h3>{{ gift.name }}</h3>
+
+                    <p>{{ gift.description }}</p>
+
+                    <h4>${{ gift.price }}</h4>
+                </div>
+            {% endfor %}
+        </div>
+
+    {% elif searched %}
+        <div id="results" class="empty-state">
+            <h3>No perfect match yet</h3>
+
+            <p>
+                Try increasing the budget or choosing a different occasion or
+                recipient type.
+            </p>
+        </div>
+    {% endif %}
+
+    <section class="mini-cta">
+        <div>
+            <p class="tagline">Need more ideas?</p>
+
+            <h2>Explore the full gift catalog.</h2>
+
+            <p>
+                Browse more gifts across different occasions, budgets, and recipient types.
+            </p>
+        </div>
+
+        <a href="/suggestions/" class="primary-btn">Explore Gifts</a>
+    </section>
+
+</section>
+
+</body>
+</html>

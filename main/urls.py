@@ -9,4 +9,6 @@ urlpatterns = [
     path('suggestions/', views.suggestions),
     path('about/', views.about),
     path('api/gifts/search/', views.gift_search_api),
+    path('find-gift/', views.find_gift),
+   
 ]

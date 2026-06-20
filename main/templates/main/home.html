@@ -5,67 +5,142 @@
 <head>
     <meta charset="UTF-8">
     <title>Giftora | Smart Gift Recommendations</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="logo">Giftora</div>
-        <div class="nav-links">
-    <a href="/">Home</a>
+<nav class="navbar">
+    <div class="logo">Giftora</div>
 
-    {% if request.user.is_authenticated %}
-        <span class="welcome-text">Hi, {{ request.user.first_name }}</span>
-        <a href="/logout/" class="nav-btn">Logout</a>
-    {% else %}
-        <a href="/login/">Login</a>
-        <a href="/register/" class="nav-btn">Get Started</a>
-    {% endif %}
-</div>
-    </nav>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/suggestions/">Explore Gifts</a>
+        <a href="/find-gift/">Find My Gift</a>
+        <a href="/about/">About</a>
 
-    <section class="hero">
-        <div class="hero-content">
-            <p class="tagline">Smart gifting made simple</p>
-            <h1>Find the perfect gift for every occasion</h1>
-            <p class="description">
-                Giftora helps users discover thoughtful gifts based on occasion,
-                budget, and recipient type — making gift shopping faster, easier,
-                and more personal.
-            </p>
+        {% if request.user.is_authenticated %}
+            <span class="welcome-text">Hi, {{ request.user.first_name }}</span>
+            <a href="/logout/" class="nav-btn">Logout</a>
+        {% else %}
+            <a href="/login/">Login</a>
+            <a href="/register/" class="nav-btn">Get Started</a>
+        {% endif %}
+    </div>
+</nav>
 
-            <div class="hero-buttons">
-                <a href="/register/" class="primary-btn">Start Now</a>
-                <a href="/login/" class="secondary-btn">Login</a>
+<section class="hero">
+    <div class="hero-content">
+        <p class="tagline">Smart gifting made simple</p>
+
+        <h1>Find a thoughtful gift without endless searching</h1>
+
+        <p class="description">
+            Giftora helps you choose gift ideas based on who the gift is for,
+            the occasion, and your budget. Instead of browsing randomly,
+            you get a clearer starting point.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="/find-gift/" class="primary-btn">Find My Gift</a>
+            <a href="/suggestions/" class="secondary-btn">Explore Gifts</a>
+        </div>
+    </div>
+
+    <div class="gift-card">
+        <div class="gift-icon">🎁</div>
+        <h3>Gift Finder</h3>
+        <p>
+            Choose recipient, occasion, and budget. Giftora shows matching
+            gift ideas in seconds.
+        </p>
+    </div>
+</section>
+
+<section class="value-section">
+    <div class="value-text">
+        <p class="tagline">Why Giftora?</p>
+        <h2>A guided way to choose gifts</h2>
+        <p>
+            Many people do not know what to buy. Giftora turns that problem
+            into a simple guided experience: answer a few questions, browse
+            matching ideas, and save time.
+        </p>
+    </div>
+
+    <div class="value-steps">
+        <div class="value-step">
+            <span>01</span>
+            <h3>Tell us the recipient</h3>
+            <p>Choose who you are buying for.</p>
+        </div>
+
+        <div class="value-step">
+            <span>02</span>
+            <h3>Pick the occasion</h3>
+            <p>Select the event or celebration.</p>
+        </div>
+
+        <div class="value-step">
+            <span>03</span>
+            <h3>Set your budget</h3>
+            <p>Get ideas that match your price range.</p>
+        </div>
+    </div>
+</section>
+
+<section class="trending-section">
+    <div class="trending-header">
+        <p class="tagline">Trending Now</p>
+
+        <h2>Trending Gifts This Season</h2>
+
+        <p>
+            Discover popular gift ideas curated for current occasions,
+            celebrations, and modern gifting trends.
+        </p>
+    </div>
+
+    <div class="gifts-grid">
+        {% for gift in trending_gifts %}
+            <div class="gift-item">
+                <img src="{{ gift.image }}" alt="{{ gift.name }}">
+                <h3>{{ gift.name }}</h3>
+                <p>{{ gift.description }}</p>
+                <h4>${{ gift.price }}</h4>
             </div>
-        </div>
+        {% empty %}
+            <div class="empty-state">
+                <h3>No trending gifts yet</h3>
+                <p>
+                    Trending gifts will appear here once they are added
+                    from the admin dashboard.
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+</section>
 
-        <div class="gift-card">
-            <div class="gift-icon">🎁</div>
-            <h3>AI Gift Assistant</h3>
-            <p>Coming soon: personalized gift ideas powered by smart recommendations.</p>
-        </div>
-    </section>
+<section class="home-cta">
+    <div>
+        <p class="tagline">Ready to choose smarter?</p>
+        <h2>Start with three simple choices.</h2>
+        <p>
+            Use the gift finder for a guided recommendation, or explore the
+            full catalog manually.
+        </p>
+    </div>
 
-    <section class="features">
-        <div class="feature-box">
-            <h3>Occasion-Based</h3>
-            <p>Choose gifts for birthdays, weddings, graduation, Eid, Ramadan, and more.</p>
-        </div>
-
-        <div class="feature-box">
-            <h3>Budget Friendly</h3>
-            <p>Find gift ideas that match your budget without wasting time searching.</p>
-        </div>
-
-        <div class="feature-box">
-            <h3>Personalized</h3>
-            <p>Gift suggestions can be filtered by recipient type, style, and preferences.</p>
-        </div>
-    </section>
+    <div class="hero-buttons">
+        <a href="/find-gift/" class="primary-btn">Use Gift Finder</a>
+        <a href="/suggestions/" class="secondary-btn">Browse Catalog</a>
+    </div>
+</section>
 
 </body>
 </html>

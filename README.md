@@ -1,35 +1,46 @@
 # Giftora
 
-Giftora is a smart gift recommendation platform built with Django.
+Giftora is a Django-based smart gift recommendation platform that helps users discover suitable gift ideas based on recipient type, occasion, and budget.
 
-The platform helps users discover suitable gifts based on occasion, budget, and recipient type, making gift selection faster and more personalized.
+## Project Overview
+
+Many users spend time searching for gifts without knowing what to choose. Giftora solves this by providing a guided gift-finding experience and a searchable gift catalog.
 
 ## Features
 
-* User Registration and Login
-* Gift Suggestions
-* Dynamic Gift Search
-* AJAX Integration
-* Admin Dashboard
-* Responsive Design
+- User Registration and Login
+- Personalized Gift Finder
+- Explore Gifts Catalog
+- Live AJAX Search
+- Gift Search API Endpoint
+- Trending Gifts Section
+- Admin Dashboard for Gift Management
+- Responsive User Interface
+- MySQL Database Integration
 
 ## Technologies Used
 
-* Python
-* Django
-* HTML
-* CSS
-* JavaScript
-* AJAX
-* SQLite
+- Python
+- Django
+- HTML
+- CSS
+- JavaScript
+- AJAX
+- MySQL
+- GitHub
+- Trello
+- MySQL Workbench
 
-## Future Improvements
+## Main Pages
 
-* AI Gift Assistant
-* MySQL Integration
-* AWS Deployment
-* Advanced Personalization
+- Home Page
+- Explore Gifts Page
+- Find My Gift Page
+- About Page
+- Login Page
+- Register Page
 
-## Author
+## API Endpoint
 
-Shaymaa Obaid
+```text
+/api/gifts/search/?q=keyword
